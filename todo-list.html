@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         .todo-container {
             max-width: 400px;
@@ -14,8 +15,15 @@
             border-radius: 10px;
             padding: 15px;
             background: white;
+
+            #taskList {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
         }
     </style>
+
 </head>
 
 <body class="bg-light">
@@ -23,12 +31,83 @@
         <div class="todo-container">
             <h2 class="text-center">To-Do List</h2>
             <div class="input-group mb-3">
-                <input type="text" id="taskInput" class="form-control" placeholder="Enter a task">
-                <button class="btn btn-primary" onclick="addTask()">Add</button>
+                <input type="text" id="taskInput" class="form-control" placeholder="Enter your task">
+                <button class="btn btn-primary" onclick="add()">Add</button>
             </div>
             <ul id="taskList" class="list-group"></ul>
         </div>
     </div>
+
+    <script>
+
+        class Todo {
+
+            constructor() {
+
+                this.list = [];
+            }
+
+            addList(taskText) {
+
+                const task = {
+                    text: taskText,
+                    checked: false
+                };
+
+                this.list.push(task);
+                this.showList();
+            }
+
+            showList() {
+
+                let taskList = document.getElementById('taskList');
+                taskList.innerHTML = '';
+
+                for (let i = 0; i < this.list.length; i++) {
+
+                    const task = this.list[i];
+
+                    let checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'form-check-input ms-3';
+                    checkbox.checked = task.checked;
+
+                    let element = document.createElement('li');
+                    element.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+                    let taskText = document.createElement('span');
+                    taskText.textContent = task.text;
+
+                    element.appendChild(taskText);
+                    element.appendChild(checkbox);
+                    taskList.appendChild(element);
+
+                    checkbox.onclick = () => {
+                        task.checked = checkbox.checked;
+                    };
+                }
+            }
+
+        }
+
+        myList = new Todo();
+
+        function add() {
+
+            var taskInput = document.getElementById('taskInput');
+
+            if (taskInput.value.trim() === "") {
+                alert("Please enter a task.");
+                return;
+            } else {
+
+                myList.addList(taskInput.value);
+                taskInput.value = '';
+            }
+        }
+
+    </script>
+
 </body>
 
 </html>
